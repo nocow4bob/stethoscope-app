@@ -3,4 +3,4 @@ allowHosts:
 hostLabels:
   - pattern: "^http://localhost:3000"
     name: Local Server
-policyServer:
+policyServer: "http://localhost:8000"

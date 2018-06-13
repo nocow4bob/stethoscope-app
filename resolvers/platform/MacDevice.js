@@ -21,7 +21,14 @@ const MacDevice = {
       fields: ['name', 'display_name as displayName', 'bundle_version as version', 'last_opened_time as lastOpenedTime']
     })
     return apps
-  }
+  },
+
+  async services (root, args, context) {
+    const services = await OSQuery.all('launchd', {
+      fields: ['name', 'label']
+    })
+    return services
+  },
 }
 
 module.exports = MacDevice

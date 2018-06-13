@@ -17,3 +17,5 @@ disk encryption: ALWAYS
 automatic updates: ALWAYS
 screen lock: IF_SUPPORTED
 remote login: NEVER
+required services:
+  - name: com.carbonblack.daemon

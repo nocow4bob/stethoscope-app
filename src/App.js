@@ -12,6 +12,7 @@ import { HOST } from './constants'
 import appConfig from './config.json'
 import ErrorMessage from './ErrorMessage'
 import './App.css'
+import './renderer.js'
 
 const socket = openSocket(HOST)
 
@@ -30,7 +31,7 @@ try {
   ipcRenderer = { on () {}, send () {} }
   log = console
 }
-
+  
 class App extends Component {
   state = {
     device: {},
@@ -68,6 +69,7 @@ class App extends Component {
     // the focus/blur handlers are used to update the last scanned time
     window.addEventListener('focus', () => this.setState({ focused: true }))
     window.addEventListener('blur', () => this.setState({ focused: false }))
+    
   }
 
   onDownloadProgress = (event, downloadProgress) => {

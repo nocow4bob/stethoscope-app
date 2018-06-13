@@ -156,6 +156,15 @@ const Security = {
     return UNSUPPORTED
   },
 
+  async requiredServices (root, args, context) {
+    const os = PlatformResolvers[context.platform]
+    if (os.requiredServices) {
+      return os.requiredServices(root, args, context)
+    }
+
+    return UNSUPPORTED
+  },
+
   async bannedApplications (root, args, context) {
     const os = PlatformResolvers[context.platform]
     if (os.bannedApplications) {

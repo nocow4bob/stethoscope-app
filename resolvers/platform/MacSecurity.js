@@ -146,7 +146,9 @@ const MacSecurity = {
   },
 
   async suggestedApplications (root, args, context) {
-    const applications = await Device.applications(root, args, context)
+    const applications = await OSQuery.all('apps', {
+      fields: ['name', 'display_name as displayName', 'bundle_version as version', 'last_opened_time as lastOpenedTime']
+    })
     const { version: osVersion } = await context.osVersion
     const { suggestedApplications = [] } = args
 
@@ -189,7 +191,9 @@ const MacSecurity = {
   },
 
   async requiredApplications (root, args, context) {
-    const applications = await Device.applications(root, args, context)
+    const applications = await OSQuery.all('apps', {
+      fields: ['name', 'display_name as displayName', 'bundle_version as version', 'last_opened_time as lastOpenedTime']
+    })    
     const { version: osVersion } = await context.osVersion
     const { requiredApplications = [] } = args
 
@@ -226,6 +230,45 @@ const MacSecurity = {
       if (version && !semver.satisfies(userApp.version, version)) {
         return { name, passing: false, reason: 'OUT_OF_DATE' }
       }
+
+      return { name, passing: true }
+    })
+  },
+
+  async requiredServices (root, args, context) {
+    const services = await OSQuery.all('launchd', {
+      fields: ['name', 'label']
+    })    
+    const { version: osVersion } = await context.osVersion
+    const { requiredServices = [] } = args
+
+    return requiredServices.filter((service) => {
+      const { platform = false } = service
+      // if a platform is required
+      if (platform) {
+        if (platform[context.platform]) {
+          return semver.satisfies(osVersion, platform[context.platform])
+        }
+        return platform.all
+      }
+      // no platform specified - default to ALL
+      return true
+    }).map(({
+      exactMatch = false,
+      name,
+      label,
+      platform      
+    }) => {
+      let userService = false
+
+      if (!exactMatch) {
+        userService = services.find((service) => (new RegExp(name, 'ig')).test(service.name))
+      } else {
+        userService = services.find((service) => service.name === name)
+      }
+
+      // service isn't installed - fail
+      if (!userService) return { name, passing: false, reason: 'NOT_INSTALLED' }
 
       return { name, passing: true }
     })

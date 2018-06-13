@@ -104,6 +104,8 @@ input DevicePolicy {
   remoteLogin: RequirementOption
   # require applications to be installed
   requiredApplications: [AppRequirement]
+  # require services to be installed
+  requiredServices: [ServiceRequirement]
   # ban applications from being installed on user's machine
   bannedApplications: [AppRequirement]
   # placeholder for suggested applications
@@ -132,6 +134,20 @@ input AppRequirement {
   description: String
 }
 
+# Defines a requirement for an installed service
+input ServiceRequirement {
+  # required service name
+  name: String!
+  # optional platform if only required for specific OS
+  platform: PlatformStringRequirement
+  # controls whether regex or equality check is performed against application name
+  exactMatch: Boolean
+  # install URL
+  url: String
+  # explanation to show user
+  description: String
+}
+
 type PolicyResult {
   # overall policy result
   status: FeatureState
@@ -149,6 +165,8 @@ type PolicyResult {
   remoteLogin: FeatureState
   # whether or not all requiredApplications are installed
   requiredApplications: [ApplicationFeatureState]
+  # whether or not all requiredServices are installed
+  requiredServices: [ServiceFeatureState]
   # whether or not any bannedApplications are installed
   bannedApplications: [ApplicationFeatureState]
   # placeholder for suggested applications
@@ -165,6 +183,7 @@ type Security {
   screenLock(requirement: RequirementOption!): Boolean!
   remoteLogin(requirement: RequirementOption!): Boolean!
   requiredApplications(requirement: RequirementOption!): [Boolean!]!
+  requiredServices(requirement: RequirementOption!): [Boolean!]!
   bannedApplications(requirement: RequirementOption!): [Boolean!]!
   suggestedApplications(requirement: RequirementOption!): [Boolean!]!
   stethoscopeVersion(requirement: Semver!): Boolean!
@@ -205,6 +224,11 @@ type Disk {
 }
 
 type ApplicationFeatureState {
+  name: String
+  status: FeatureState
+}
+
+type ServiceFeatureState {
   name: String
   status: FeatureState
 }

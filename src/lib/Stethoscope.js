@@ -66,6 +66,11 @@ export default class Stethoscope {
           automaticUpdates
           remoteLogin
           stethoscopeVersion
+          
+          requiredServices {
+            name
+            status
+          }
 
           requiredApplications {
             name

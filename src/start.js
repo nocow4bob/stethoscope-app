@@ -8,6 +8,8 @@ const env = process.env.NODE_ENV || 'production'
 const pkg = require('../package.json')
 const findIcon = require('./lib/findIcon')(env)
 const startGraphQLServer = require('../server')
+const { setup: setupPushReceiver } = require('electron-push-receiver');
+
 
 let mainWindow
 let tray
@@ -56,6 +58,7 @@ function createWindow () {
         log.error(`error checking for update: ${err}`)
       })
     }
+
   })
 
   if (shouldQuit) {
@@ -86,6 +89,7 @@ function createWindow () {
   }
 
   mainWindow = new BrowserWindow(windowPrefs)
+  setupPushReceiver(mainWindow.webContents);
 
   if (tray) tray.destroy()
 

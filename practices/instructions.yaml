@@ -134,3 +134,27 @@ practices:
       win32: |
         1. Open [Windows Update](ms-settings:windowsupdate) in the Settings.
         1. Click "Restart now"
+
+  requiredApplications:
+    title:
+      PASS: All required applications installed
+      FAIL: Missing required applications
+    description: >
+      You should install all required applications to ensure your machine is as protected as possible.
+    directions:
+      darwin: |
+        1. Work with IT Tools to get software installed.
+      win32: |
+        1. Work with IT Tools to get software installed.
+
+  requiredServices:
+    title:
+      PASS: All required services are installed
+      FAIL: Missing required services
+    description: >
+      Make sure all required services are running to ensure your machine is protected.
+    directions:
+      darwin: |
+        1. Work with IT Tools to get service installed.
+      win32: |
+        1. Work with IT Tools to get service installed.  

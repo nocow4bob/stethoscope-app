@@ -7,5 +7,10 @@
       "label": "Slack Support",
       "link": "slack://channel?id=C3S952VRD&team=cfasiteam"
     }]
+  },
+  "pushNotifications": {
+    "gcm":{
+      "senderId": "355159752677"
+    }
   }
 }

@@ -3,7 +3,7 @@
 // All of the Node.js APIs are available in this process.
 
 var path = require('path');
-
+const config = require('./config.json')
 const { ipcRenderer } = window.require('electron')
 //const electron = window.require("electron")
 
@@ -52,6 +52,6 @@ ipcRenderer.on(NOTIFICATION_RECEIVED, (_, serverNotificationPayload) => {
 })
 
 // Start service
-const senderId = '355159752677' // <-- replace with FCM sender ID from FCM web admin under Settings->Cloud Messaging
+const senderId = config.pushNotifications.gcm.senderId // <-- replace with FCM sender ID from FCM web admin under Settings->Cloud Messaging
 console.log('starting service and registering a client')
 ipcRenderer.send(START_NOTIFICATION_SERVICE, senderId)
